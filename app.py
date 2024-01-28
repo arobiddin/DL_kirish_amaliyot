@@ -6,7 +6,7 @@ plt = platform.system()
 if plt == 'Linux': pathlib.WindowsPath = pathlib.PosixPath
 
 # title
-st.title("To'plarni klassifikatsiya qiluvchi model")
+st.title("Tennis va futbol to'plarni klassifikatsiya qiluvchi model")
 
 #rasm yuklash
 file = st.file_uploader("Rasm yuklash", type=['png', 'gif', 'jpeg', 'jpg', 'svg'])
@@ -23,9 +23,12 @@ if file:
 
     # prediction
     pred, pred_id, probs = model.predict(img)
-    st.success(f"Bashorat: {pred}")
-    st.info(f"Ehtimollik: {probs[pred_id]*100:.1f}%")
+    if probs[pred_id]*100<80:
+        st.info(f"Bu model bunday rasm turini aniqlay olmaydi. Yuqoridagi ko'rsatmaga amal qiling!")
+    else:
+        st.success(f"Bashorat: {pred}")
+        st.info(f"Ehtimollik: {probs[pred_id]*100:.1f}%")
 
-    #plotting
-    fig = px.bar(x=probs*100, y=model.dls.vocab)
-    st.plotly_chart(fig)
+        #plotting
+        fig = px.bar(x=probs*100, y=model.dls.vocab)
+        st.plotly_chart(fig)

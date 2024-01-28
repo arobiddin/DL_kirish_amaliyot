@@ -12,19 +12,20 @@ st.title("To'plarni klassifikatsiya qiluvchi model")
 file = st.file_uploader("Rasm yuklash", type=['png', 'gif', 'jpeg', 'jpg', 'svg'])
 
 
-st.image(file)
+if file:
+    st.image(file)
 
     #PIL convert
-img = PILImage.create(file)
+    img = PILImage.create(file)
 
     # modelni ishga tushurish
-model = load_learner('balls_classifier_model.pkl')
+    model = load_learner('balls_classifier_model.pkl')
 
     # prediction
-pred, pred_id, probs = model.predict(img)
-st.success(f"Bashorat: {pred}")
-st.info(f"Ehtimollik: {probs[pred_id]*100:.1f}%")
+    pred, pred_id, probs = model.predict(img)
+    st.success(f"Bashorat: {pred}")
+    st.info(f"Ehtimollik: {probs[pred_id]*100:.1f}%")
 
     #plotting
-fig = px.bar(x=probs*100, y=model.dls.vocab)
-st.plotly_chart(fig)
+    fig = px.bar(x=probs*100, y=model.dls.vocab)
+    st.plotly_chart(fig)
